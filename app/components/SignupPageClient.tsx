@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import EmailPasswordForm from './EmailPasswordForm';
-import { createClient } from '@/utils/supabase/client';
+import { createClient } from '@/lib/supabase/client';
 import { User } from '@supabase/supabase-js';
 
 export default function SignupPageClient() {

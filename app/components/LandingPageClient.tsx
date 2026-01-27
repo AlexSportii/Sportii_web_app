@@ -11,7 +11,7 @@ import CTA from './CTA';
 import Footer from './Footer';
 import GamesCard from './GamesCard';
 import HowItWorks from './HowItWorks';
-import { createClient } from '@/utils/supabase/client';
+import { createClient } from '@/lib/supabase/client';
 import { User } from '@supabase/supabase-js';
 
 export default function LandingPageClient() {
