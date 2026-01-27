@@ -1,0 +1,242 @@
+'use client';
+
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import { useState, useEffect } from 'react';
+import { createClient } from '@/utils/supabase/client';
+import { User } from '@supabase/supabase-js';
+
+export default function PrivacyPage() {
+    const [isDark, setIsDark] = useState<boolean>(false);
+    const [user, setUser] = useState<User | null>(null);
+    const supabase = createClient();
+
+    useEffect(() => {
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            setIsDark(true);
+            document.documentElement.classList.add('dark');
+        } else {
+            setIsDark(false);
+            document.documentElement.classList.remove('dark');
+        }
+
+        const getUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+        };
+        getUser();
+    }, []);
+
+    const toggleTheme = () => {
+        if (isDark) {
+            document.documentElement.classList.remove('dark');
+            localStorage.theme = 'light';
+            setIsDark(false);
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.theme = 'dark';
+            setIsDark(true);
+        }
+    };
+
+    return (
+        <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+            <Navbar isDark={isDark} toggleTheme={toggleTheme} user={user} />
+            <main className="flex-grow py-12 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-8 sm:p-12 border border-gray-100 dark:border-gray-700">
+                    <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-8 text-center">
+                        Privacy Policy
+                    </h1>
+
+                    <div className="prose prose-blue dark:prose-invert max-w-none space-y-6 text-gray-700 dark:text-gray-300">
+                        <p className="text-sm text-gray-500 dark:text-gray-400 font-semibold">
+                            Last updated: October 21, 2025
+                        </p>
+
+                        <p>
+                            This Privacy Policy describes how SportMeet Oy (&quot;Sportii&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) collects, uses, and protects your personal information when you use the sportii.app and related services (the &quot;Service&quot;).
+                        </p>
+                        <p>
+                            We are committed to protecting your privacy and ensuring that your personal data is handled securely and transparently, in accordance with the EU General Data Protection Regulation (GDPR) and applicable local laws.
+                        </p>
+                        <p>
+                            By using Sportii, you agree to the collection and use of information as described in this Privacy Policy.
+                        </p>
+
+                        <section>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">1. Interpretation and Definitions</h3>
+                            <h4 className="font-bold text-gray-800 dark:text-gray-200 mt-2">Interpretation</h4>
+                            <p>Words with initial capital letters have meanings defined below. These definitions apply whether they appear in singular or plural form.</p>
+                            <h4 className="font-bold text-gray-800 dark:text-gray-200 mt-2">Definitions</h4>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li><strong>Account</strong> — a unique user profile created to access Sportii and join or organize games.</li>
+                                <li><strong>Application / Platform</strong> — the Sportii web app (sportii.app) and related interfaces operated by the Company.</li>
+                                <li><strong>Company</strong> — SportMeet Oy, (“Sportii”, “we”, “us”, or “our”), 3427424-5.</li>
+                                <li><strong>Cookies</strong> — small files stored on your device to collect standard Internet log information and visitor behavior.</li>
+                                <li><strong>Country</strong> — refers to Finland.</li>
+                                <li><strong>Device</strong> — any device capable of accessing the Service (computer, smartphone, tablet).</li>
+                                <li><strong>Personal Data</strong> — any information that can identify you directly or indirectly.</li>
+                                <li><strong>Service</strong> — the Sportii platform, including the website, web app, booking system, and chat features.</li>
+                                <li><strong>Service Provider</strong> — any third-party partner who processes data on behalf of Sportii (e.g., Stripe, Supabase, analytics tools).</li>
+                                <li><strong>Usage Data</strong> — automatically collected data generated by your use of the Service (e.g., pages visited, device type, IP address).</li>
+                                <li><strong>You / User</strong> — the individual using the Service.</li>
+                            </ul>
+                        </section>
+
+                        <section>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">2. Types of Data We Collect</h3>
+                            <h4 className="font-bold text-gray-800 dark:text-gray-200 mt-2">Personal Data You Provide</h4>
+                            <p>When creating an account or using Sportii, we may collect:</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li>First name and last name</li>
+                                <li>Email address</li>
+                                <li>Profile photo (optional)</li>
+                                <li>Age or date of birth (for eligibility verification)</li>
+                                <li>Contact details (e.g., phone number, if provided)</li>
+                                <li>Payment details (via Stripe — not stored by us)</li>
+                                <li>Messages sent via in-app chats</li>
+                                <li>Feedback, reviews, or other content you post</li>
+                            </ul>
+
+                            <h4 className="font-bold text-gray-800 dark:text-gray-200 mt-2">Usage Data (Automatic Collection)</h4>
+                            <p>Collected automatically through Supabase and analytics tools, including:</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li>IP address, browser type, device type</li>
+                                <li>Access timestamps and session duration</li>
+                                <li>Referring URLs and in-app navigation behavior</li>
+                                <li>Game or venue browsing and participation patterns</li>
+                            </ul>
+
+                            <h4 className="font-bold text-gray-800 dark:text-gray-200 mt-2">Location Data</h4>
+                            <p>If you grant permission, we may collect approximate or precise location data to show nearby games or venues. You can disable location permissions in your device settings at any time.</p>
+
+                            <h4 className="font-bold text-gray-800 dark:text-gray-200 mt-2">Social Login Data</h4>
+                            <p>If you register through Google or Apple, we collect your name, email, and profile picture as provided by the social account. You may revoke these permissions from your third-party account settings.</p>
+                        </section>
+
+                        <section>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">3. Cookies and Tracking Technologies</h3>
+                            <p>We use cookies and similar technologies to improve functionality, remember preferences, and analyze usage. Types of cookies we use:</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li><strong>Essential Cookies</strong> — required for login, payments, and security.</li>
+                                <li><strong>Preference Cookies</strong> — remember your settings, like language or sport filters.</li>
+                                <li><strong>Analytics Cookies</strong> — help us understand how users engage with Sportii (e.g., via Plausible or Google Analytics).</li>
+                            </ul>
+                            <p className="mt-2">You can control or delete cookies in your browser settings. Disabling cookies may affect some features of the Service.</p>
+                        </section>
+
+                        <section>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">4. How We Use Your Data</h3>
+                            <p>We use your Personal Data to:</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li>Provide and maintain the Service (game listings, bookings, payments, and communications).</li>
+                                <li>Manage your account and authenticate users through Supabase.</li>
+                                <li>Process payments securely through Stripe.</li>
+                                <li>Contact you with game updates, notifications, or support messages.</li>
+                                <li>Send marketing or promotional emails (only if you opt in).</li>
+                                <li>Analyze and improve the platform’s usability and performance.</li>
+                                <li>Comply with legal obligations and prevent fraud or abuse.</li>
+                                <li>Create anonymized statistics for business analytics and service optimization.</li>
+                            </ul>
+                            <p className="mt-2">We never sell your personal data.</p>
+                        </section>
+
+                        <section>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">5. Sharing of Data</h3>
+                            <p>We share your data only when necessary and under strict data protection terms:</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li><strong>Supabase (database, authentication, storage)</strong> — cloud data hosting in the EU.</li>
+                                <li><strong>Stripe (payments)</strong> — processes your payment details securely.</li>
+                                <li><strong>Analytics providers</strong> — to monitor performance and usage trends.</li>
+                                <li><strong>Communication tools</strong> — for email, chat, or notifications.</li>
+                                <li><strong>Legal authorities</strong> — only if required by law or valid request.</li>
+                            </ul>
+                            <p className="mt-2">All partners comply with GDPR or equivalent standards.</p>
+                        </section>
+
+                        <section>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">6. Marketing Communications</h3>
+                            <p>We may send updates or promotions related to Sportii events, new sports, or features — but only if you have opted in. You can unsubscribe anytime by:</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li>Clicking “Unsubscribe” in our emails, or</li>
+                                <li>Emailing contact@sportii.app</li>
+                            </ul>
+                            <p className="mt-2">We never send third-party marketing without your explicit consent.</p>
+                        </section>
+
+                        <section>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">7. Retention of Your Data</h3>
+                            <p>We keep your Personal Data only as long as needed for the purposes stated here:</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li><strong>Account data</strong> — kept while your account is active and up to 2 years after deletion (for legal compliance).</li>
+                                <li><strong>Usage data</strong> — anonymized or deleted after 12 months.</li>
+                                <li><strong>Payment records</strong> — retained for 6–10 years, per EU tax laws.</li>
+                                <li><strong>Backups</strong> — automatically deleted after 30–90 days.</li>
+                            </ul>
+                            <p className="mt-2">When retention periods expire, data is deleted or anonymized securely.</p>
+                        </section>
+
+                        <section>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">8. International Data Transfers</h3>
+                            <p>We primarily store and process data in the EU/EEA. If data is transferred outside the EU (e.g., via Stripe or Supabase), it is protected by:</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li>EU Standard Contractual Clauses (SCCs), and</li>
+                                <li>Adequate data protection safeguards per GDPR Article 46.</li>
+                            </ul>
+                        </section>
+
+                        <section>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">9. Data Security</h3>
+                            <p>We use modern security standards, including:</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li>SSL/TLS encryption for data transmission</li>
+                                <li>Role-based access control in Supabase</li>
+                                <li>Stripe-certified PCI-DSS compliance</li>
+                                <li>Regular database backups and monitoring</li>
+                            </ul>
+                            <p className="mt-2">However, no online system is 100% secure. You use Sportii at your own risk but we work continuously to enhance protection.</p>
+                        </section>
+
+                        <section>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">10. Your Data Protection Rights (GDPR)</h3>
+                            <p>As an EU resident, you have the following rights:</p>
+                            <ul className="list-disc pl-5 space-y-1">
+                                <li><strong>Access</strong> – request copies of your data.</li>
+                                <li><strong>Rectification</strong> – request corrections to inaccurate or incomplete data.</li>
+                                <li><strong>Erasure (“Right to be Forgotten”)</strong> – request deletion of your data.</li>
+                                <li><strong>Restriction</strong> – limit how we process your data.</li>
+                                <li><strong>Portability</strong> – request a copy of your data in a usable format.</li>
+                                <li><strong>Objection</strong> – object to processing, including marketing.</li>
+                                <li><strong>Withdraw consent</strong> – where processing is based on consent.</li>
+                            </ul>
+                            <p className="mt-2">To exercise any rights, contact privacy@sportii.app. We respond within 30 days, as required by law. If you believe we mishandled your data, you may also contact your national Data Protection Authority (DPA).</p>
+                        </section>
+
+                        <section>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">11. Children’s Privacy</h3>
+                            <p>Sportii is intended for users aged 16 and older. We do not knowingly collect personal data from minors under 16 without verified parental consent. If we learn that we have collected such data, we will delete it promptly.</p>
+                        </section>
+
+                        <section>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">12. Links to Other Websites</h3>
+                            <p>The Service may include links to third-party sites (e.g., venue maps, social media). We are not responsible for their content or privacy practices. Please review each third party’s Privacy Policy before sharing personal data.</p>
+                        </section>
+
+                        <section>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">13. Changes to This Policy</h3>
+                            <p>We may update this Privacy Policy from time to time. Changes will be posted here with an updated “Last updated” date. Major updates will be communicated by email or in-app notification.</p>
+                        </section>
+
+                        <section>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">14. Contact Us</h3>
+                            <p className="font-semibold">SportMeet Oy</p>
+                            <p>3427424-5</p>
+                            <p>Email: <a href="mailto:contact@sportii.app" className="text-primary hover:underline">contact@sportii.app</a></p>
+                        </section>
+                    </div>
+                </div>
+            </main>
+            <Footer />
+        </div>
+    );
+}

@@ -103,16 +103,16 @@ export const FOOTER_LINKS: FooterLinkGroup[] = [
         title: "Company",
         links: [
             { label: "About Us", href: "#" },
-            { label: "Careers", href: "#" },
-            { label: "Blog", href: "#" },
-            { label: "Press", href: "#" },
+            // { label: "Careers", href: "#" },
+            // { label: "Blog", href: "#" },
+            // { label: "Press", href: "#" },
         ]
     },
     {
         title: "Support",
         links: [
             { label: "Help Center", href: "#" },
-            { label: "Terms of Service", href: "#" },
+            { label: "Terms of Service", href: "/terms" },
             { label: "Privacy Policy", href: "#" },
             { label: "Contact Us", href: "#" },
         ]

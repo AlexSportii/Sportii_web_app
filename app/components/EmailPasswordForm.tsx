@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { login, signup } from '../login/actions';
 
 interface EmailPasswordFormProps {
@@ -77,11 +78,11 @@ export default function EmailPasswordForm({ mode, onSuccess, redirectTo = '/' }:
                             id="age"
                             name="age"
                             type="number"
-                            min="1"
+                            min="16"
                             max="120"
                             required
                             className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                            placeholder="25"
+                            placeholder="16"
                         />
                     </div>
                 </>
@@ -102,9 +103,16 @@ export default function EmailPasswordForm({ mode, onSuccess, redirectTo = '/' }:
             </div>
 
             <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Password
-                </label>
+                <div className="flex justify-between items-center mb-1">
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Password
+                    </label>
+                    {mode === 'login' && (
+                        <Link href="/forgot-password" className="text-sm font-medium text-primary hover:text-blue-500">
+                            Lost your password? Recover here.
+                        </Link>
+                    )}
+                </div>
                 <input
                     id="password"
                     name="password"
@@ -116,12 +124,41 @@ export default function EmailPasswordForm({ mode, onSuccess, redirectTo = '/' }:
                 />
             </div>
 
+            {mode === 'signup' && (
+                <div className="space-y-2">
+                    <div className="flex items-start">
+                        <input
+                            id="terms"
+                            name="terms"
+                            type="checkbox"
+                            required
+                            className="h-4 w-4 mt-1 text-primary border-gray-300 rounded focus:ring-primary"
+                        />
+                        <label htmlFor="terms" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                            Yes, I understand and agree to the <Link href="/terms" className="text-primary text-blue-500 text-bold">Sportii Terms of Service</Link>, including the  <Link href="/privacy" className="text-primary text-blue-500 text-bold">User Agreement and Privacy Policy.</Link>
+                        </label>
+                    </div>
+                    <div className="flex items-start">
+                        <input
+                            id="ageConfirm"
+                            name="ageConfirm"
+                            type="checkbox"
+                            required
+                            className="h-4 w-4 mt-1 text-primary border-gray-300 rounded focus:ring-primary"
+                        />
+                        <label htmlFor="ageConfirm" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                            Yes, I confirm to be 16 or over to be able to use this service.
+                        </label>
+                    </div>
+                </div>
+            )}
+
             {error && <p className="text-red-500 text-sm">{error}</p>}
 
             <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 px-4 bg-primary hover:bg-blue-600 text-white font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3 px-4 bg-black dark:bg-white hover:bg-blue-60 text-white dark:text-black font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {loading ? (mode === 'login' ? 'Signing in...' : 'Creating account...') : (mode === 'login' ? 'Sign In' : 'Create Account')}
             </button>
