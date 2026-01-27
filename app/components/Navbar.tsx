@@ -19,7 +19,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme, user }) => {
 
     const handleSignOut = async () => {
         await supabase.auth.signOut();
-        router.refresh();
+        router.push('/');
     };
 
     return (
@@ -40,16 +40,32 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme, user }) => {
                     </div>
 
                     <div className="hidden md:flex items-center space-x-8">
-                        {["Home", "Features"].map((item) => (
-                            <a
-                                key={item}
-                                href="#"
-                                className="text-sm font-medium text-text-muted-light dark:text-text-muted-dark hover:text-primary dark:hover:text-primary transition-colors"
-                            >
-                                {item}
-                            </a>
-                        ))}
-                        <a href="/about_us" className="text-sm font-medium text-primary hover:text-blue-600 transition-colors">About Us</a>
+                        {user ? (
+                            <>
+                                <Link href="/events" className="text-sm font-medium text-text-muted-light dark:text-text-muted-dark hover:text-primary dark:hover:text-primary transition-colors">
+                                    Games
+                                </Link>
+                                <Link href="/bookings" className="text-sm font-medium text-text-muted-light dark:text-text-muted-dark hover:text-primary dark:hover:text-primary transition-colors">
+                                    My Games
+                                </Link>
+                                <Link href="/venues" className="text-sm font-medium text-text-muted-light dark:text-text-muted-dark hover:text-primary dark:hover:text-primary transition-colors">
+                                    Venues
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                {["Home", "Features"].map((item) => (
+                                    <a
+                                        key={item}
+                                        href="#"
+                                        className="text-sm font-medium text-text-muted-light dark:text-text-muted-dark hover:text-primary dark:hover:text-primary transition-colors"
+                                    >
+                                        {item}
+                                    </a>
+                                ))}
+                                <a href="/about_us" className="text-sm font-medium text-primary hover:text-blue-600 transition-colors">About Us</a>
+                            </>
+                        )}
                     </div>
 
                     <div className="flex items-center gap-4">
@@ -63,9 +79,9 @@ const Navbar: React.FC<NavbarProps> = ({ isDark, toggleTheme, user }) => {
 
                         {user ? (
                             <div className="flex items-center gap-4">
-                                <span className="text-sm text-gray-700 dark:text-gray-300 hidden sm:inline-block">
-                                    {user.email}
-                                </span>
+                                <Link href="/profile" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors hidden sm:inline-block">
+                                    My profile
+                                </Link>
                                 <button
                                     onClick={handleSignOut}
                                     className="hidden sm:inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-primary border border-primary dark:border-primary/50 rounded-full hover:bg-primary/10 hover:border-transparent transition-all duration-200 focus:outline-none"

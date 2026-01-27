@@ -1,24 +1,19 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Navbar from './Navbar';
-import Hero from './Hero';
-import Features from './Features';
 import Footer from './Footer';
-import GamesCard from './GamesCard';
-import HowItWorks from './HowItWorks';
 import { createClient } from '@/lib/supabase/client';
 import { User } from '@supabase/supabase-js';
+import GamesCard from './GamesCard';
 
-interface LandingPageClientProps {
+interface EventsClientProps {
     user: User | null;
 }
 
-export default function LandingPageClient({ user: initialUser }: LandingPageClientProps) {
+export default function EventsClient({ user: initialUser }: EventsClientProps) {
     const [isDark, setIsDark] = useState<boolean>(false);
     const [user, setUser] = useState<User | null>(initialUser);
-    const router = useRouter();
 
     // Initialize Supabase client
     const supabase = createClient();
@@ -33,7 +28,6 @@ export default function LandingPageClient({ user: initialUser }: LandingPageClie
             document.documentElement.classList.remove('dark');
         }
 
-        // Auth state initialization and subscription
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user ?? null);
         });
@@ -55,31 +49,13 @@ export default function LandingPageClient({ user: initialUser }: LandingPageClie
         }
     };
 
-    const handleJoinGame = () => {
-        if (!user) {
-            router.push('/login');
-        } else {
-            // Logic for joining game when already logged in
-            // For now, perhaps navigate to the game or show a success message
-            // Since SingleGameCard also links to details, this button action is specific
-            console.log("User is logged in, proceeding to join game...");
-        }
-    };
-
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col bg-background-light dark:bg-background-dark transition-colors duration-300">
             <Navbar isDark={isDark} toggleTheme={toggleTheme} user={user} />
             <main className="flex-grow">
-                <Hero />
-
-                <GamesCard onJoinGame={handleJoinGame} />
-                <HowItWorks />
-                {/* <SearchBar /> */}
-                {/* <Features /> */}
-                {/* <Team />
-                <CTA /> */}
+                <GamesCard />
+                <Footer />
             </main>
-            <Footer />
         </div>
     );
 }

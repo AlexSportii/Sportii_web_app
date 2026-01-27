@@ -29,6 +29,9 @@ export default function LoginPageClient() {
         // Auth state initialization and subscription
         const getUser = async () => {
             const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                window.location.href = '/events';
+            }
             setUser(user);
         };
         getUser();
@@ -72,7 +75,7 @@ export default function LoginPageClient() {
                     </div>
 
                     <div className="bg-white dark:bg-gray-800 py-8 px-4 shadow-xl rounded-2xl sm:px-10 border border-gray-100 dark:border-gray-700">
-                        <EmailPasswordForm mode="login" redirectTo="/" />
+                        <EmailPasswordForm mode="login" redirectTo="/events" />
                     </div>
                 </div>
             </main>
