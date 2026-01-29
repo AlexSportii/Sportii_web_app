@@ -3,20 +3,18 @@
 import { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import { User } from '@supabase/supabase-js';
 import SingleGameCard from './SingleGameCard';
 import { ALL_GAMES } from '../constants';
 import { Game } from '../types';
 
-interface AllGamesClientProps {
-    user: User | null;
-}
 
-export default function AllGamesClient({ user: initialUser }: AllGamesClientProps) {
+export default function AllGamesClient() {
     const [isDark, setIsDark] = useState<boolean>(false);
     const [selectedSport, setSelectedSport] = useState<string>('All');
     const [selectedDate, setSelectedDate] = useState<string>('All');
+    // Using filteredGames state to update the list based on filters
     const [filteredGames, setFilteredGames] = useState<Game[]>(ALL_GAMES);
+
 
     useEffect(() => {
         // Theme initialization
@@ -28,8 +26,6 @@ export default function AllGamesClient({ user: initialUser }: AllGamesClientProp
             document.documentElement.classList.remove('dark');
         }
 
-
-        // Initial filter application
         applyFilters(selectedSport, selectedDate);
 
     }, []); // eslint-disable-next-line react-hooks/exhaustive-deps
