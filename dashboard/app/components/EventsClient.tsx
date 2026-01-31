@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import Navbar from './layout/Navbar';
+import Footer from './layout/Footer';
 import { createClient } from '@/lib/supabase/client';
 import { User } from '@supabase/supabase-js';
-import GamesCard from './GamesCard';
+import GamesCard from '../features/games/components/GamesCard';
 
 interface EventsClientProps {
     user: User | null;

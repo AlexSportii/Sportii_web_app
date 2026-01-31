@@ -1,15 +1,11 @@
 'use client';
 
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer';
 import { useState, useEffect } from 'react';
-import { createClient } from '@/lib/supabase/client';
-import { User } from '@supabase/supabase-js';
 
 export default function PrivacyPage() {
     const [isDark, setIsDark] = useState<boolean>(false);
-    const [user, setUser] = useState<User | null>(null);
-    const supabase = createClient();
 
     useEffect(() => {
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -19,12 +15,6 @@ export default function PrivacyPage() {
             setIsDark(false);
             document.documentElement.classList.remove('dark');
         }
-
-        const getUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            setUser(user);
-        };
-        getUser();
     }, []);
 
     const toggleTheme = () => {
@@ -41,7 +31,7 @@ export default function PrivacyPage() {
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-            <Navbar isDark={isDark} toggleTheme={toggleTheme} user={user} />
+            <Navbar isDark={isDark} toggleTheme={toggleTheme} />
             <main className="flex-grow py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-8 sm:p-12 border border-gray-100 dark:border-gray-700">
                     <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mb-8 text-center">

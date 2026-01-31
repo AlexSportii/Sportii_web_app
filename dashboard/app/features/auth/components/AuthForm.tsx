@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { loginWithEmail, verifyOtp } from '../login/actions'
+import { loginWithEmail, verifyOtp } from '../../../login/actions'
 
 interface AuthFormProps {
     onSuccess?: () => void

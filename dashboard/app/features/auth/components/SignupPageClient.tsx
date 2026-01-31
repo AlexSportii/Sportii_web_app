@@ -2,15 +2,19 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import Navbar from '../../../components/layout/Navbar';
+import Footer from '../../../components/layout/Footer';
 import EmailPasswordForm from './EmailPasswordForm';
 import { createClient } from '@/lib/supabase/client';
 import { User } from '@supabase/supabase-js';
 
-export default function SignupPageClient() {
+interface SignupPageClientProps {
+    user: User | null;
+}
+
+export default function SignupPageClient({ user: initialUser }: SignupPageClientProps) {
     const [isDark, setIsDark] = useState<boolean>(false);
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | null>(initialUser);
 
     const supabase = createClient();
 
@@ -22,12 +26,6 @@ export default function SignupPageClient() {
             setIsDark(false);
             document.documentElement.classList.remove('dark');
         }
-
-        const getUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            setUser(user);
-        };
-        getUser();
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user ?? null);

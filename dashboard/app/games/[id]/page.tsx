@@ -1,4 +1,4 @@
-import GameDetailsClient from '../../components/GameDetailsClient';
+import GameDetailsClient from '../../features/games/components/GameDetailsClient';
 import { ALL_GAMES } from '../../constants';
 import { createClient } from '@/lib/supabase/server';
 

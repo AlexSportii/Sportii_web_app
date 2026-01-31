@@ -1,4 +1,4 @@
-import GameDetailsClient from '../../components/GameDetailsClient';
+import GameDetailsClient from '../../features/games/components/GameDetailsClient';
 import { ALL_GAMES } from '../../constants';
 
 // Handle generating static params for static export if needed, or just for Next.js to know routes

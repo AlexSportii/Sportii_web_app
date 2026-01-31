@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { TEAM_MEMBERS } from '../constants';
+import { TEAM_MEMBERS } from '../../../constants';
 
 const Team: React.FC = () => {
     return (

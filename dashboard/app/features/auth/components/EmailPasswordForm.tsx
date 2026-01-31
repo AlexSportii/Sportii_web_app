@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { login, signup } from '../login/actions';
+import { login, signup } from '../../../login/actions';
 
 interface EmailPasswordFormProps {
     mode: 'login' | 'signup';

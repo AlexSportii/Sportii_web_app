@@ -4,17 +4,23 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'; // Correct import for App Router
-import Navbar from './Navbar';
-import Footer from './Footer';
-import { ALL_GAMES } from '../constants';
+import Navbar from '../../../components/layout/Navbar';
+import Footer from '../../../components/layout/Footer';
+import { ALL_GAMES } from '../../../constants';
+
+import { User } from '@supabase/supabase-js';
+import { createClient } from '@/lib/supabase/client';
 
 interface GameDetailsClientProps {
     id: string;
+    user: User | null;
 }
 
-export default function GameDetailsClient({ id }: GameDetailsClientProps) {
+export default function GameDetailsClient({ id, user: initialUser }: GameDetailsClientProps) {
     const [isDark, setIsDark] = useState<boolean>(false);
+    const [user, setUser] = useState<User | null>(initialUser);
     const router = useRouter();
+    const supabase = createClient();
 
     const game = ALL_GAMES.find((g) => g.id === id);
 
@@ -26,6 +32,14 @@ export default function GameDetailsClient({ id }: GameDetailsClientProps) {
             setIsDark(false);
             document.documentElement.classList.remove('dark');
         }
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null);
+        });
+
+        return () => {
+            subscription.unsubscribe();
+        };
     }, []);
 
     const toggleTheme = () => {
@@ -43,7 +57,7 @@ export default function GameDetailsClient({ id }: GameDetailsClientProps) {
     if (!game) {
         return (
             <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-black transition-colors duration-300">
-                <Navbar isDark={isDark} toggleTheme={toggleTheme} />
+                <Navbar isDark={isDark} toggleTheme={toggleTheme} user={user} />
                 <main className="flex-grow flex items-center justify-center">
                     <div className="text-center">
                         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Game not found</h1>
@@ -66,7 +80,7 @@ export default function GameDetailsClient({ id }: GameDetailsClientProps) {
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-black transition-colors duration-300">
-            <Navbar isDark={isDark} toggleTheme={toggleTheme} />
+            <Navbar isDark={isDark} toggleTheme={toggleTheme} user={user} />
 
             <main className="flex-grow pb-12">
                 {/* Hero Image Section */}
@@ -265,6 +279,8 @@ export default function GameDetailsClient({ id }: GameDetailsClientProps) {
                     </div>
                 </div>
             </main>
+
+            <Footer />
         </div>
     );
 }

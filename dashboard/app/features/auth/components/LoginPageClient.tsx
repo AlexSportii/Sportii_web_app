@@ -2,16 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import Navbar from '../../../components/layout/Navbar';
+import Footer from '../../../components/layout/Footer';
 import AuthForm from './AuthForm';
 import EmailPasswordForm from './EmailPasswordForm';
 import { createClient } from '@/lib/supabase/client';
 import { User } from '@supabase/supabase-js';
 
-export default function LoginPageClient() {
+interface LoginPageClientProps {
+    user: User | null;
+}
+
+export default function LoginPageClient({ user: initialUser }: LoginPageClientProps) {
     const [isDark, setIsDark] = useState<boolean>(false);
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | null>(initialUser);
 
     // Initialize Supabase client
     const supabase = createClient();
@@ -25,16 +29,6 @@ export default function LoginPageClient() {
             setIsDark(false);
             document.documentElement.classList.remove('dark');
         }
-
-        // Auth state initialization and subscription
-        const getUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-                window.location.href = '/events';
-            }
-            setUser(user);
-        };
-        getUser();
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user ?? null);

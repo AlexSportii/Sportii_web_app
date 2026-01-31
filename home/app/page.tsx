@@ -1,4 +1,4 @@
-import LandingPageClient from './components/LandingPageClient';
+import LandingPageClient from './features/landing/components/LandingPageClient';
 
 export const metadata = {
     title: 'Sportii - The Ultimate Sports Landing Page',

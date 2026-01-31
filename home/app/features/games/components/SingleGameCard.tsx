@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Game } from '../types';
+import { Game } from '../../../types';
 
 interface SingleGameCardProps {
     game: Game;

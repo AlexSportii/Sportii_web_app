@@ -1,28 +1,19 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Navbar from './Navbar';
-import Footer from './Footer';
-import { createClient } from '@/lib/supabase/client';
-import { User } from '@supabase/supabase-js';
+import Navbar from '../../../components/layout/Navbar';
+import Footer from '../../../components/layout/Footer';
 import SingleGameCard from './SingleGameCard';
-import { ALL_GAMES } from '../constants';
-import { Game } from '../types';
+import { ALL_GAMES } from '../../../constants';
+import { Game } from '../../../types';
+interface AllGamesClientProps { }
 
-interface AllGamesClientProps {
-    user: User | null;
-}
-
-export default function AllGamesClient({ user: initialUser }: AllGamesClientProps) {
+export default function AllGamesClient({ }: AllGamesClientProps) {
     const [isDark, setIsDark] = useState<boolean>(false);
-    const [user, setUser] = useState<User | null>(initialUser);
     const [selectedSport, setSelectedSport] = useState<string>('All');
     const [selectedDate, setSelectedDate] = useState<string>('All');
     // Using filteredGames state to update the list based on filters
     const [filteredGames, setFilteredGames] = useState<Game[]>(ALL_GAMES);
-
-
-    const supabase = createClient();
 
     useEffect(() => {
         // Theme initialization
@@ -34,16 +25,8 @@ export default function AllGamesClient({ user: initialUser }: AllGamesClientProp
             document.documentElement.classList.remove('dark');
         }
 
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            setUser(session?.user ?? null);
-        });
-
         // Initial filter application
         applyFilters(selectedSport, selectedDate);
-
-        return () => {
-            subscription.unsubscribe();
-        };
     }, []); // eslint-disable-next-line react-hooks/exhaustive-deps
 
     const toggleTheme = () => {
@@ -89,7 +72,7 @@ export default function AllGamesClient({ user: initialUser }: AllGamesClientProp
 
     return (
         <div className="min-h-screen flex flex-col bg-background-light dark:bg-background-dark transition-colors duration-300">
-            <Navbar isDark={isDark} toggleTheme={toggleTheme} user={user} />
+            <Navbar isDark={isDark} toggleTheme={toggleTheme} />
 
             <main className="flex-grow py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
                 <div className="mb-8">

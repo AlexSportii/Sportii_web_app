@@ -1,4 +1,4 @@
-import AllGamesClient from '../../components/AllGamesClient';
+import AllGamesClient from '../../features/games/components/AllGamesClient';
 import { createClient } from '@/lib/supabase/server';
 
 export default async function AllGamesPage() {

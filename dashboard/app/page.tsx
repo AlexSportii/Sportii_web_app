@@ -1,4 +1,4 @@
-import LandingPageClient from './components/LandingPageClient';
+import LandingPageClient from './features/landing/components/LandingPageClient';
 import { createClient } from '@/lib/supabase/server';
 
 export const metadata = {

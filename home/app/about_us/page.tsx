@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import Team from '../components/Team';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer';
+import Team from '../features/landing/components/Team';
 import Image from 'next/image';
 
 export default function AboutUsPage() {

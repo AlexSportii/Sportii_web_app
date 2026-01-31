@@ -1,4 +1,4 @@
-import AllGamesClient from '../components/AllGames';
+import AllGamesClient from '../features/games/components/AllGamesClient';
 
 export default async function GamesPage() {
 
